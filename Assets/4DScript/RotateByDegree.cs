@@ -55,6 +55,39 @@ namespace FRL.IO.FourD
         }
 
         // Update is called once per frame
+
+		public void XY(float degree)
+		{
+			degrees [0] = (int)degree;
+			UpdateRotation();
+		}
+
+		public void XZ(float degree)
+		{
+			degrees [1] = (int)degree;
+			UpdateRotation();
+		}
+		public void XW(float degree)
+		{
+			degrees [2] = (int)degree;
+			UpdateRotation();
+		}
+		public void YZ(float degree)
+		{
+			degrees [3] = (int)degree;
+			UpdateRotation();
+		}
+		public void YW(float degree)
+		{
+			degrees [4] = (int)degree;
+			UpdateRotation();
+		}
+		public void ZW(float degree)
+		{
+			degrees [5] = (int)degree;
+			UpdateRotation();
+		}
+
         void Update()
         {
             showDegree();
@@ -188,9 +221,9 @@ namespace FRL.IO.FourD
                     break;
                 case 5:
                     identity(rot);
-                    rot[2, 2] = cos;
-                    rot[2, 3] = -sin;
-                    rot[3, 2] = sin;
+                    rot[1, 1] = cos;
+                    rot[1, 3] = -sin;
+                    rot[3, 1] = sin;
                     rot[3, 3] = cos;
                     break;
                 case 6:
