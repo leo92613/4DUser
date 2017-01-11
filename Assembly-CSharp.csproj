@@ -57,6 +57,7 @@
      <Compile Include="Assets\4DScript\ObjManager.cs" />
      <Compile Include="Assets\4DScript\RotateByDegree.cs" />
      <Compile Include="Assets\4DScript\ShowVelocity.cs" />
+     <Compile Include="Assets\4DScript\TestManager.cs" />
      <Compile Include="Assets\4DScript\pong.cs" />
      <Compile Include="Assets\Input\Scripts\BaseEventData.cs" />
      <Compile Include="Assets\Input\Scripts\BaseInputModule.cs" />

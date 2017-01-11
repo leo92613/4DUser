@@ -12,6 +12,8 @@ namespace FRL.IO.FourD
         private HyperCube cube;
         private int degreeXY,degreeXZ,degreeXW,degreeYZ,degreeYW, degreeZW = 0;
         private int[] degrees;
+
+		public int iterTime = 100;
         // Use this for initialization
 
         void UpdateRotation()
@@ -26,21 +28,20 @@ namespace FRL.IO.FourD
                 src[3] = cube.srcVertices[i].w;
                 float[] dst = new float[4];
                 rot.transform(src, dst);
-                //Debug.Log(dst[0]);
-                //Debug.Log(dst[1]);
-                //Debug.Log(dst[2]);
-                //Debug.Log(dst[3]);
                 cube.updatepoint4(dst, i);
                 cube.update_edges();
-                //Debug.Log(rot.toString());
             }
         }
 
+		void Awake(){
+
+		}
         void Start()
         {
-            degrees = new int[6];
-            cube = this.GetComponent<HyperCubeOBJ>().returnCube();
-            rot = new rotation();
+			cube = this.GetComponent<HyperCubeOBJ>().returnCube();
+			rot = new rotation();
+			degrees = new int[6];
+			rot.setIterTime (iterTime);
         }
         void showDegree()
         {
@@ -55,6 +56,13 @@ namespace FRL.IO.FourD
         }
 
         // Update is called once per frame
+
+		public void setDegrees(int[] d)
+		{
+			degrees = d;
+			showDegree ();
+			UpdateRotation ();
+		}
 
 		public void XY(float degree)
 		{
@@ -90,47 +98,36 @@ namespace FRL.IO.FourD
 
         void Update()
         {
-            showDegree();
-            if(Input.GetKey(KeyCode.Space))
-            {
-                //Debug.Log("Key Pressed");
-                //degreeXW += 6;
-                degrees[2] = (degrees[2] + 6) % 360;
-                //rot.createRot("xw",degreeXW);
-                UpdateRotation();
-            }
-
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                //Debug.Log("Key Pressed");
-                degrees[0] = (degrees[0]+6)% 2880;
-                //rot.createRot("xy", degreeXY);
-                UpdateRotation();
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                //Debug.Log("Key Pressed");
-                //degreeXY -= 6;
-                degrees[0] = (degrees[0] - 6) % 360;
-                //rot.createRot("xy", degreeXY);
-                UpdateRotation();
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                //Debug.Log("Key Pressed");
-                //degreeXZ += 6;
-                degrees[1] = (degrees[1] + 6) % 360;
-                //rot.createRot("xz", degreeXZ);
-                UpdateRotation();
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                //Debug.Log("Key Pressed");
-                //degreeXZ -= 6;
-                degrees[1] = (degrees[1] - 6) % 360;
-                //rot.createRot("xz", degreeXZ);
-                UpdateRotation();
-            }
+			//UpdateRotation();
+			//degrees [0]++;
+            //showDegree();
+			//UpdateRotation();
+//            if(Input.GetKey(KeyCode.Space))
+//            {
+//				degrees [2] = (degrees [2] + 6) % 360;
+//                UpdateRotation();
+//            }
+//
+//            if (Input.GetKey(KeyCode.LeftArrow))
+//            {
+//                degrees[0] = (degrees[0]+6)% 2880;
+//                UpdateRotation();
+//            }
+//            if (Input.GetKey(KeyCode.RightArrow))
+//            {
+//                degrees[0] = (degrees[0] - 6) % 360;
+//                UpdateRotation();
+//            }
+//            if (Input.GetKey(KeyCode.A))
+//            {
+//                degrees[1] = (degrees[1] + 6) % 360;
+//                UpdateRotation();
+//            }
+//            if (Input.GetKey(KeyCode.D))
+//            {
+//                degrees[1] = (degrees[1] - 6) % 360;
+//                UpdateRotation();
+//            }
            
         }
     }
@@ -139,7 +136,7 @@ namespace FRL.IO.FourD
     {
         float[,] mat, rot, tmp;
         const int size = 4;
-
+		int iterTime = 100;
         enum axis
         {
             xy = 1,
@@ -150,6 +147,9 @@ namespace FRL.IO.FourD
             zw = 6
         }
 
+		public void setIterTime(int t){
+			iterTime = t;
+		}
         public rotation()
         {
             mat = new float[size, size];
@@ -161,20 +161,15 @@ namespace FRL.IO.FourD
         public void createMat(int[] degrees)
         {
             identity(mat);
-            int degree = 3;
-            bool end = false;
-            while (!end)
+			for (int i = 0; i < iterTime; i++)
             {
-                end = true;
-                for (int i = 0; i < 6; i++)
+                for (int j = 0; j < 6; j++)
                 {
-                    if (degrees[i] > degree)
-                    {
-                        end = false;
-                        createRot(i + 1, 3.0f);
-                    }
+					float degree = degrees [j];
+					degree = degree / iterTime;
+					//Debug.Log (degree);
+					createRot(j + 1, degree);
                 }
-                degree += 3;
             }
         }
 
@@ -187,8 +182,8 @@ namespace FRL.IO.FourD
 
         public void createRot(int type,float degree)
         {
-            float cos = Mathf.Cos(degree / (180.0f * 3.14f));
-            float sin = Mathf.Sin(degree / (180.0f * 3.14f));
+			float cos = Mathf.Cos((degree / 180.0f) * 3.14f);
+			float sin = Mathf.Sin((degree / 180.0f) * 3.14f);
             switch (type)
             {
                 case 1:
