@@ -123,7 +123,7 @@ namespace FRL.IO.FourD
 
     public class HyperCube
     {
-        int size;
+        public int size;
         GameObject[] edges;
         public Vector4[] srcVertices;
         public Vector4[] vertices;
