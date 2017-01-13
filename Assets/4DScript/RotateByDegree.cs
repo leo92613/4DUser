@@ -20,7 +20,7 @@ namespace FRL.IO.FourD
         {
             int size = cube.size/2;
             Vector4[] rst = new Vector4[size];
-            Debug.Log(size);
+            //Debug.Log(size);
             for (int i = 0; i < size; i++)
             {
                 rst[i] = new Vector4(cube.vertices[i].x,cube.vertices[i].y,cube.vertices[i].z,cube.vertices[i].w);            

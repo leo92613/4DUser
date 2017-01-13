@@ -9,7 +9,7 @@ namespace FRL.IO.FourD
 	public class TestManager : MonoBehaviour
 	{
 	
-		public RotateByDegree HyperCube;
+		public TrackPadRotation HyperCube;
 		public RotateByDegree SampleCube;
 		public int[] srcDegrees;
 		public int[] targetDegrees;
@@ -17,6 +17,7 @@ namespace FRL.IO.FourD
 		public int level = 0;
         public bool toggle = true;
 		System.Random random;
+        public float timer = 0;
 		// Use this for initialization
 		void Start ()
 		{
@@ -26,8 +27,13 @@ namespace FRL.IO.FourD
             //Medium ();
             setSample();
             SampleCube.setDegrees (targetDegrees);
-            SampleCube.gameObject.SetActive(false);
-            HyperCube.gameObject.SetActive(true);
+            while (getDifferent() <2.0f)
+            {
+                setSample();
+                SampleCube.setDegrees(targetDegrees);
+            }
+           // SampleCube.gameObject.SetActive(false);
+           // HyperCube.gameObject.SetActive(true);
         }
 
         // Update is called once per frame
@@ -77,24 +83,47 @@ namespace FRL.IO.FourD
 			setSample ();
 		}
 
-        public void CompareVertex()
+
+        float getDifferent()
         {
             Vector4[] Current = HyperCube.returnVertices();
             Vector4[] Target = SampleCube.returnVertices();
             float value = 0.0f;
-            for (int i = 0; i < Current.Length; i ++)
+            for (int i = 0; i < Current.Length; i++)
             {
                 float different = float.MaxValue;
-                for (int j = 0; j< Target.Length; j++)
+                for (int j = 0; j < Target.Length; j++)
                 {
-                    if (different > Vector4.Distance(Current[i],Target[j]))
+                    if (different > Vector4.Distance(Current[i], Target[j]))
                     {
                         different = Vector4.Distance(Current[i], Target[j]);
                     }
                 }
                 value += different;
             }
-            Debug.Log(value);
+            return value;
+        }
+
+        public void showTarget ()
+        {
+            bool b = SampleCube.gameObject.activeSelf;
+            SampleCube.gameObject.SetActive(!b);
+        }
+        public void CompareVertex()
+        {
+            if (timer == 0)
+            {
+                timer = Time.time;
+            }
+            float value = getDifferent();
+            if (value < 1.0f)
+            {
+
+                timer = Time.time - timer;
+                Debug.Log(timer);
+                Debug.Break();
+            }
+            
         }
 	}
 }

@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Key.unity
+- path: Assets/Scenes/Vive.unity
   isLoaded: 1
   isActive: 1

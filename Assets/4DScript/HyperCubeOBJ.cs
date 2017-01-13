@@ -23,10 +23,13 @@ namespace FRL.IO.FourD
         private float radius;
         private bool isTriggerPressed = false;
 
+        public Test2Manger testmanager;
+
+        public int tag;
         void Awake()
         {
             box = this.GetComponent<Transform>();
-            cube = new HyperCube(box);
+            cube = new HyperCube(box,tag);
             UpdateRotation(cube, trackball, A, B);
         }
 
@@ -50,15 +53,28 @@ namespace FRL.IO.FourD
             return result;
         }
 
+        public Vector4[] returnVertices()
+        {
+            int size = cube.size / 2;
+            Vector4[] rst = new Vector4[size];
+            //Debug.Log(size);
+            for (int i = 0; i < size; i++)
+            {
+                rst[i] = new Vector4(cube.vertices[i].x, cube.vertices[i].y, cube.vertices[i].z, cube.vertices[i].w);
+            }
+            return rst;
+        }
+
         // Update is called once per frame
         void Update()
         {
-            if (isTriggerPressed)
+            if (isTriggerPressed && tag == 0)
             {
                 A = ReturnVector(A_);
                 B = ReturnVector(B_);
                 UpdateRotation(cube, trackball, A, B);
                 A_ = B_;
+                testmanager.CompareVertex();
             }
         }
 
@@ -123,12 +139,18 @@ namespace FRL.IO.FourD
 
     public class HyperCube
     {
+        int tag;
         public int size;
         GameObject[] edges;
         public Vector4[] srcVertices;
         public Vector4[] vertices;
         Vector2[] index;
         Transform parentobj;
+
+        public void setTag(int t)
+        {
+            tag = t;
+        }
 
         void setparent(Transform par)
         {
@@ -138,8 +160,9 @@ namespace FRL.IO.FourD
             }
         }
 
-        public HyperCube(Transform par)
+        public HyperCube(Transform par, int t)
         {
+            setTag(t);
             parentobj = par;
             size = 32;
             srcVertices = new Vector4[16];
@@ -199,6 +222,8 @@ namespace FRL.IO.FourD
                 Vector3 pos = Vector3.Lerp(beginpoint_, endpoint_, (float)0.5);
                 float distance = Vector3.Distance(beginpoint_, endpoint_);
                 GameObject segObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                if (tag == 1)
+                    segObj.GetComponent<MeshRenderer>().material.color = Color.red;
                 MonoBehaviour.Destroy(segObj.GetComponent<Collider>());
                 segObj.transform.position = pos;
                 segObj.transform.LookAt(endpoint_);
