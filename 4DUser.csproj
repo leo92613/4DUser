@@ -70,13 +70,17 @@
     <Compile Include="Assets\4DScript\HyperTwentyFourCellOBJ.cs" />
     <Compile Include="Assets\4DScript\Hyperface.cs" />
     <Compile Include="Assets\4DScript\Hypermesh.cs" />
+    <Compile Include="Assets\4DScript\KeyBoardRotation.cs" />
     <Compile Include="Assets\4DScript\LeftManager.cs" />
+    <Compile Include="Assets\4DScript\MagicTrackPadInput.cs" />
+    <Compile Include="Assets\4DScript\MagicTrackPadRotation.cs" />
     <Compile Include="Assets\4DScript\Manager.cs" />
     <Compile Include="Assets\4DScript\ObjManager.cs" />
     <Compile Include="Assets\4DScript\RotateByDegree.cs" />
     <Compile Include="Assets\4DScript\ShowVelocity.cs" />
     <Compile Include="Assets\4DScript\SimplePersist.cs" />
     <Compile Include="Assets\4DScript\Test2Manger.cs" />
+    <Compile Include="Assets\4DScript\Test3Manager.cs" />
     <Compile Include="Assets\4DScript\TestManager.cs" />
     <Compile Include="Assets\4DScript\TrackPadRotation.cs" />
     <Compile Include="Assets\4DScript\ViveSliderInput.cs" />

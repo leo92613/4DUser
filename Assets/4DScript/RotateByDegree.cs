@@ -12,9 +12,15 @@ namespace FRL.IO.FourD
         private HyperCube cube;
         private int degreeXY,degreeXZ,degreeXW,degreeYZ,degreeYW, degreeZW = 0;
         private int[] degrees;
-
+        private bool canRotate = true;
 		public int iterTime = 100;
         // Use this for initialization
+
+
+        public void disableRotate()
+        {
+            canRotate = false;
+        }
 
         public Vector4[] returnVertices()
         {
@@ -30,6 +36,8 @@ namespace FRL.IO.FourD
       
         void UpdateRotation()
         {
+            if (!canRotate)
+                return;
             rot.createMat(degrees);
             for (int i = 0; i < 16; i++)
             {
@@ -110,37 +118,57 @@ namespace FRL.IO.FourD
 
         void Update()
         {
-			//UpdateRotation();
-			//degrees [0]++;
+            //UpdateRotation();
+            //degrees [0]++;
             //showDegree();
-			//UpdateRotation();
-//            if(Input.GetKey(KeyCode.Space))
-//            {
-//				degrees [2] = (degrees [2] + 6) % 360;
-//                UpdateRotation();
-//            }
-//
-//            if (Input.GetKey(KeyCode.LeftArrow))
-//            {
-//                degrees[0] = (degrees[0]+6)% 2880;
-//                UpdateRotation();
-//            }
-//            if (Input.GetKey(KeyCode.RightArrow))
-//            {
-//                degrees[0] = (degrees[0] - 6) % 360;
-//                UpdateRotation();
-//            }
-//            if (Input.GetKey(KeyCode.A))
-//            {
-//                degrees[1] = (degrees[1] + 6) % 360;
-//                UpdateRotation();
-//            }
-//            if (Input.GetKey(KeyCode.D))
-//            {
-//                degrees[1] = (degrees[1] - 6) % 360;
-//                UpdateRotation();
-//            }
-           
+            //UpdateRotation();
+            //if (Input.GetKey(KeyCode.Space))
+            //{
+            //    degrees[2] = (degrees[2] + 6) % 360;
+            //    UpdateRotation();
+            //}
+
+            //if (Input.GetKey(KeyCode.LeftArrow))
+            //{
+            //    degrees[0] = (degrees[0] + 359) % 360;
+            //    UpdateRotation();
+            //}
+            //if (Input.GetKey(KeyCode.RightArrow))
+            //{
+            //    degrees[0] = (degrees[0] +1) % 360;
+            //    UpdateRotation();
+            //}
+            //if (Input.GetKey(KeyCode.UpArrow))
+            //{
+            //    degrees[1] = (degrees[1] + 6) % 360;
+            //    UpdateRotation();
+            //}
+            //if (Input.GetKey(KeyCode.DownArrow))
+            //{
+            //    degrees[1] = (degrees[1] +359) % 360;
+            //    UpdateRotation();
+            //}
+            //if (Input.GetKey(KeyCode.W))
+            //{
+            //    degrees[1] = (degrees[1] + 1) % 360;
+            //    UpdateRotation();
+            //}
+            //if (Input.GetKey(KeyCode.S))
+            //{
+            //    degrees[1] = (degrees[1] +359) % 360;
+            //    UpdateRotation();
+            //}
+            //if (Input.GetKey(KeyCode.A))
+            //{
+            //    degrees[1] = (degrees[1] + 1) % 360;
+            //    UpdateRotation();
+            //}
+            //if (Input.GetKey(KeyCode.D))
+            //{
+            //    degrees[1] = (degrees[1] +359) % 360;
+            //    UpdateRotation();
+            //}
+
         }
     }
 
