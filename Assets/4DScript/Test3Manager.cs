@@ -14,14 +14,18 @@ namespace FRL.IO.FourD
         public int[] srcDegrees;
         public int[] targetDegrees;
         public int[] difficulty;
-        public int level = 0;
+        public int level = -2;
         public bool toggle = true;
         System.Random random;
         public float timer = 0;
+        public GameObject GUI;
+
+        public float value;
         // Use this for initialization
         void Start()
         {
-            difficulty = new int[4] { 0, 2, 3, 5 };
+            //difficulty = new int[4] { 0, 2, 3, 5 };
+            difficulty = new int[6] { 0,1,2,3,4,5 };
             random = new System.Random();
             targetDegrees = new int[6];
             //Medium ();
@@ -32,7 +36,7 @@ namespace FRL.IO.FourD
                 setSample();
                 SampleCube.setDegrees(targetDegrees);
             }
-            SampleCube.disableRotate();
+            SampleCube.set(false);
             // SampleCube.gameObject.SetActive(false);
             // HyperCube.gameObject.SetActive(true);
         }
@@ -42,11 +46,38 @@ namespace FRL.IO.FourD
         {
             //SampleCube.gameObject.SetActive (false);
             //HyperCube.gameObject.SetActive (true);
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.F12))
             {
-                SampleCube.gameObject.SetActive(true);
-                HyperCube.gameObject.SetActive(false);
+                reset();
             }
+
+            if (Input.GetKeyDown(KeyCode.F8))
+            {
+                HyperCube.reset();
+            }
+            if (Time.time - timer > 600f)
+            {
+                Debug.Log("Used up to 10 mins!");
+                Debug.Log(Time.time - timer);
+                GUI.SetActive(true);
+                HyperCube.set(false);
+            }
+        }
+
+        public void reset()
+        {
+            value = float.MaxValue;
+            level++;
+            if (level > 3)
+                Application.LoadLevel(1);
+            SampleCube.reset();
+            setSample();
+            SampleCube.setDegrees(targetDegrees);
+            HyperCube.reset();
+            timer = 0f;
+            SampleCube.set(false);
+            HyperCube.set(true);
+            GUI.SetActive(false);
         }
 
         public void CheckTarget()
@@ -59,8 +90,29 @@ namespace FRL.IO.FourD
 
         void setSample()
         {
-            for (int i = 0; i < difficulty.Length; i++)
-                targetDegrees[difficulty[i]] = random.Next(360);
+            switch (level)
+            {
+                case -2:
+                    for (int i = 0; i < difficulty.Length; i++)
+                        targetDegrees[difficulty[i]] = random.Next(360);
+                    break;
+
+                case -1:
+                    break;
+
+                case 0:
+                    targetDegrees = new int[6] { 60, 352, 0, 194, 0, 0 };
+                    break;
+                case 1:
+                    targetDegrees = new int[6] { 116, 29, 237, 0, 0, 0 };
+                    break;
+                case 2:
+                    targetDegrees = new int[6] { 7, 319, 83, 0, 58, 0 };
+                    break;
+                case 3:
+                    targetDegrees = new int[6] { 3, 89, 71, 205, 9, 101 };
+                    break;
+            }
         }
 
         void Easy()
@@ -95,8 +147,8 @@ namespace FRL.IO.FourD
 
         float getDifferent()
         {
-            Vector4[] Current = HyperCube.returnVertices();
-            Vector4[] Target = SampleCube.returnVertices();
+            Vector3[] Current = HyperCube.returnVertices();
+            Vector3[] Target = SampleCube.returnVertices();
             float value = 0.0f;
             for (int i = 0; i < Current.Length; i++)
             {
@@ -124,13 +176,18 @@ namespace FRL.IO.FourD
             {
                 timer = Time.time;
             }
-            float value = getDifferent();
-            if (value < 1.0f)
+            value = getDifferent();
+            //Debug.Log(value);
+                if (value < 0.5f)
             {
 
                 timer = Time.time - timer;
                 Debug.Log(timer);
-                Debug.Break();
+                //Debug.Break();
+                GUI.SetActive(true);
+                HyperCube.set(false);
+               // reset();
+
             }
 
         }

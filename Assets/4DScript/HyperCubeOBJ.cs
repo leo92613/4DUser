@@ -22,10 +22,34 @@ namespace FRL.IO.FourD
 
         private float radius;
         private bool isTriggerPressed = false;
-
+        public bool canRotate = true;
         public Test2Manger testmanager;
 
         public int tag;
+
+        public void reset()
+        {
+            trackball = new Trackball(4);
+            for (int i = 0; i < 16; i++)
+            {
+                float[] src = new float[4];
+                src[0] = cube.srcVertices[i].x;
+                src[1] = cube.srcVertices[i].y;
+                src[2] = cube.srcVertices[i].z;
+                src[3] = cube.srcVertices[i].w;
+                float[] dst = new float[4];
+                trackball.transform(src, dst);
+                //Debug.Log(dst[1]);
+                //Debug.Log(trackball.toString());
+                cube.updatepoint4(dst, i);
+                cube.update_edges();
+            }
+        }
+
+        public void set(bool b)
+        {
+            canRotate = b;
+        }
         void Awake()
         {
             box = this.GetComponent<Transform>();
@@ -53,14 +77,14 @@ namespace FRL.IO.FourD
             return result;
         }
 
-        public Vector4[] returnVertices()
+        public Vector3[] returnVertices()
         {
             int size = cube.size / 2;
-            Vector4[] rst = new Vector4[size];
+            Vector3[] rst = new Vector3[size];
             //Debug.Log(size);
             for (int i = 0; i < size; i++)
             {
-                rst[i] = new Vector4(cube.vertices[i].x, cube.vertices[i].y, cube.vertices[i].z, cube.vertices[i].w);
+                rst[i] = new Vector4(cube.vertices[i].x, cube.vertices[i].y, cube.vertices[i].z);
             }
             return rst;
         }
@@ -68,7 +92,7 @@ namespace FRL.IO.FourD
         // Update is called once per frame
         void Update()
         {
-            if (isTriggerPressed && tag == 0)
+            if (isTriggerPressed && tag == 0 && canRotate)
             {
                 A = ReturnVector(A_);
                 B = ReturnVector(B_);

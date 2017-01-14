@@ -32,8 +32,9 @@ namespace FRL.IO.FourD
                 setSample();
                 SampleCube.setDegrees(targetDegrees);
             }
-           // SampleCube.gameObject.SetActive(false);
-           // HyperCube.gameObject.SetActive(true);
+            SampleCube.set(false);
+            // SampleCube.gameObject.SetActive(false);
+            // HyperCube.gameObject.SetActive(true);
         }
 
         // Update is called once per frame
@@ -86,8 +87,8 @@ namespace FRL.IO.FourD
 
         float getDifferent()
         {
-            Vector4[] Current = HyperCube.returnVertices();
-            Vector4[] Target = SampleCube.returnVertices();
+            Vector3[] Current = HyperCube.returnVertices();
+            Vector3[] Target = SampleCube.returnVertices();
             float value = 0.0f;
             for (int i = 0; i < Current.Length; i++)
             {

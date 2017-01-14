@@ -33,15 +33,14 @@ namespace FRL.IO.FourD
             UpdateRotation(cube, trackball, A, B);
         }
 
-
-        public Vector4[] returnVertices()
+        public Vector3[] returnVertices()
         {
             int size = cube.size / 2;
-            Vector4[] rst = new Vector4[size];
+            Vector3[] rst = new Vector3[size];
             //Debug.Log(size);
             for (int i = 0; i < size; i++)
             {
-                rst[i] = new Vector4(cube.vertices[i].x, cube.vertices[i].y, cube.vertices[i].z, cube.vertices[i].w);
+                rst[i] = new Vector4(cube.vertices[i].x, cube.vertices[i].y, cube.vertices[i].z);
             }
             return rst;
         }

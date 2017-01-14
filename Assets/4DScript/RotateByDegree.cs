@@ -16,24 +16,41 @@ namespace FRL.IO.FourD
 		public int iterTime = 100;
         // Use this for initialization
 
-
-        public void disableRotate()
+        public void reset()
         {
-            canRotate = false;
+            canRotate = true;
+            rot = new rotation();
+            rot.setIterTime(iterTime);
+            //for (int i = 0; i < 16; i++)
+            //{
+            //    float[] src = new float[4];
+            //    src[0] = cube.srcVertices[i].x;
+            //    src[1] = cube.srcVertices[i].y;
+            //    src[2] = cube.srcVertices[i].z;
+            //    src[3] = cube.srcVertices[i].w;
+            //    float[] dst = new float[4];
+            //    cube.updatepoint4(src, i);
+            //    cube.update_edges();
+            //}
         }
 
-        public Vector4[] returnVertices()
+        public void set(bool b)
         {
-            int size = cube.size/2;
-            Vector4[] rst = new Vector4[size];
+            canRotate = b;
+        }
+
+        public Vector3[] returnVertices()
+        {
+            int size = cube.size / 2;
+            Vector3[] rst = new Vector3[size];
             //Debug.Log(size);
             for (int i = 0; i < size; i++)
             {
-                rst[i] = new Vector4(cube.vertices[i].x,cube.vertices[i].y,cube.vertices[i].z,cube.vertices[i].w);            
+                rst[i] = new Vector4(cube.vertices[i].x, cube.vertices[i].y, cube.vertices[i].z);
             }
             return rst;
         }
-      
+
         void UpdateRotation()
         {
             if (!canRotate)

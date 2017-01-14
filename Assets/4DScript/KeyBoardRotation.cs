@@ -26,7 +26,9 @@ namespace FRL.IO.FourD
         public int tag = 0;
         public float eps = 0.01f;
         public int type = 0;
-        public TestManager testmanager;
+        public Test3Manager testmanager;
+
+        public bool canRotate = true;
         void Awake()
         {
             box = this.GetComponent<Transform>();
@@ -35,14 +37,19 @@ namespace FRL.IO.FourD
         }
 
 
-        public Vector4[] returnVertices()
+        public void set(bool b)
+        {
+            canRotate = b;
+        }
+
+        public Vector3[] returnVertices()
         {
             int size = cube.size / 2;
-            Vector4[] rst = new Vector4[size];
+            Vector3[] rst = new Vector3[size];
             //Debug.Log(size);
             for (int i = 0; i < size; i++)
             {
-                rst[i] = new Vector4(cube.vertices[i].x, cube.vertices[i].y, cube.vertices[i].z, cube.vertices[i].w);
+                rst[i] = new Vector4(cube.vertices[i].x, cube.vertices[i].y, cube.vertices[i].z);
             }
             return rst;
         }
@@ -65,6 +72,25 @@ namespace FRL.IO.FourD
                     break;
         }
             return result;
+        }
+
+        public void reset()
+        {
+            trackball = new Trackball(4);
+            for (int i = 0; i < 16; i++)
+            {
+                float[] src = new float[4];
+                src[0] = cube.srcVertices[i].x;
+                src[1] = cube.srcVertices[i].y;
+                src[2] = cube.srcVertices[i].z;
+                src[3] = cube.srcVertices[i].w;
+                float[] dst = new float[4];
+                trackball.transform(src, dst);
+                //Debug.Log(dst[1]);
+                //Debug.Log(trackball.toString());
+                cube.updatepoint4(dst, i);
+                cube.update_edges();
+            }
         }
 
         // Update is called once per frame
@@ -254,7 +280,7 @@ namespace FRL.IO.FourD
 
             }
 
-            if (isTriggerPressed)
+            if (isTriggerPressed && canRotate)
             {
                 A_ = new Vector3(0f, 0f, 1.0f);
                 A = ReturnVector(A_, type);
@@ -265,7 +291,7 @@ namespace FRL.IO.FourD
                 //A = new Vector4();
                 B = ReturnVector(B_, type);
                 UpdateRotation(cube, trackball, A, B);
-                //testmanager.CompareVertex();
+                testmanager.CompareVertex();
                 //A_ = B_;
             }
         }
