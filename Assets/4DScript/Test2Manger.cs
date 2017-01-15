@@ -54,13 +54,14 @@ namespace FRL.IO.FourD
             {
                 HyperCube.reset();
             }
-            if (Time.time - timer > 600f)
-            {
-                Debug.Log("Used up to 10 mins!");
-                Debug.Log(Time.time - timer);
-                GUI.SetActive(true);
-                HyperCube.set(false);
-            }
+            //if (Time.time - timer > 600f)
+            //{
+            //    Debug.Log("Used up to 10 mins!");
+            //    Debug.Log(Time.time - timer);
+            //    timer = Time.time;
+            //    GUI.SetActive(true);
+            //    HyperCube.set(false);
+            //}
         }
 
         private void reset()
